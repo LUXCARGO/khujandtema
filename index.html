@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+  <meta charset="UTF-8">
+  <title>Хучанд Тема</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+      max-width: 500px;
+      margin: auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    label {
+      margin-top: 15px;
+      display: block;
+    }
+    select, input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      background-color: #333;
+      color: white;
+      margin-top: 20px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Хучанд Тема</h1>
+
+  <form id="anketaForm">
+    <label>Роли худро интихоб кун:</label>
+    <select id="myRole" required>
+      <option value="">--Интихоб кунед--</option>
+      <option value="Актив">Актив</option>
+      <option value="Пассив">Пассив</option>
+      <option value="Уни">Уни</option>
+    </select>
+
+    <label>Роли партнёр чи хел бошад? :</label>
+    <select id="partnerRole" required>
+      <option value="">--Интихоб кунед--</option>
+      <option value="Актив">Актив</option>
+      <option value="Пассив">Пассив</option>
+      <option value="Уни">Уни</option>
+    </select>
+
+    <label>Чанд солаи ту? :</label>
+    <input type="number" id="myAge" required min="10" max="99" placeholder="Мисол: 23">
+
+    <label>Чандсоларо кофтести? :</label>
+    <input type="text" id="targetAge" required placeholder="Мисол: 23 ё аз 18 то 27">
+
+    <label>Партнёр аз кучо бошад? :</label>
+    <input type="text" id="location" required placeholder="Мисол: Душанбе">
+
+    <label>Иловаҳо дароред (агар бошанд):</label>
+    <textarea id="extras" rows="4" placeholder="Нависед..."></textarea>
+
+    <button type="submit">Фиристодан</button>
+  </form>
+
+  <script>
+    document.getElementById("anketaForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const myRole = document.getElementById("myRole").value;
+      const partnerRole = document.getElementById("partnerRole").value;
+      const myAge = document.getElementById("myAge").value;
+      const targetAge = document.getElementById("targetAge").value;
+      const location = document.getElementById("location").value;
+      const extras = document.getElementById("extras").value;
+
+      if (!myRole || !partnerRole || !myAge || !targetAge || !location) {
+        alert("Лутфан ҳамаи майдонҳои заруриро пур кунед.");
+        return;
+      }
+
+      const message = `Анкета 🔊\n` +
+        `👤 Ман: ${myRole}, ${myAge} сола.\n` +
+        `🔍 Дар ҷустуҷӯи ${partnerRole}, ${targetAge} сола бошад, аз ${location} бошад.` +
+        (extras.trim() ? `\n\n📎 Иловаҳо:\n${extras.trim()}` : '') +
+        `\n\nХоҳишмандон дар комментария ➕ монед, анкетагузор худаш ба шумо менависад ✍`;
+
+      // 🔒 ЗАМЕНИ на свои данные
+      const botToken = '8002308770:AAHXx6NlxuAQ3yaneUglineBNZ-LZaYZfo4';
+      const chatId = '2574066913'; // например: -1001234567890
+
+      const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          chat_id: chatId,
+          text: message
+        })
+      });
+
+      if (response.ok) {
+        alert("Анкета фиристода шуд!");
+        document.getElementById("anketaForm").reset();
+      } else {
+        alert("Хатогӣ ҳангоми фиристодан. Бори дигар кӯшиш кунед.");
+      }
+    });
+  </script>
+
+</body>
+</html>
